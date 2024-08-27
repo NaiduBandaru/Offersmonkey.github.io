@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Integration</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const chatInitialized = localStorage.getItem('chatInitialized');
+
+            const webchatOptions = {
+                customData: { language: "en" },
+                socketUrl: "https://4f18-13-202-139-24.ngrok-free.app", // Update with your ngrok URL
+            };
+
+            if (!chatInitialized) {
+                localStorage.setItem('chatInitialized', 'true');
+                webchatOptions.initPayload = '/greet';
+                webchatOptions.title = 'Welcome to Offersmonkey';
+                webchatOptions.subtitle = 'Say hi and get started';
+            } else {
+                webchatOptions.initPayload = '/';
+                webchatOptions.title = 'Welcome Back';
+                webchatOptions.subtitle = 'Continue where you left off';
+            }
+
+            window.WebChat.default(webchatOptions, null);
+
+            window.addEventListener('beforeunload', () => {
+                localStorage.removeItem('chatInitialized');
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- This div is where the chat widget will be rendered -->
+</body>
+</html>
